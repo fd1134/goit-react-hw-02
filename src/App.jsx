@@ -1,33 +1,59 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
+import { useState,useEffect } from 'react'
+import Description from './components/Description/Description'
+import FeedBack from './components/Feedback/Feedback';
+import Options from './components/Options/Options';
+import Notification from './components/Notification/Notification';
 import './App.css'
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [options, setOptions] = useState(() => {
+    // Anahtar ile değeri okuyoruz
+    const savedOptions = window.localStorage.getItem("options");
+  
+    // Eğer burada bir değer varsa, ayrıştırıyor ve
+    // bunu durumun başlangıç değeri olarak döndürüyoruz
+    if (savedOptions !== null) {
+      try {
+        return JSON.parse(savedOptions);  // JSON parse hatası için try-catch kullanıyoruz
+      } catch (error) {
+        console.error("localStorage verisi geçersiz:", error);
+        return { good: 0, neutral: 0, bad: 0 }; // Hata durumunda varsayılan değer döner
+      }
+    }
+    
+    return { good: 0, neutral: 0, bad: 0 };  // Varsayılan değer
+  });
+  
+  useEffect(() => {
+    // options durumu değiştiğinde localStorage'a kaydediyoruz
+    window.localStorage.setItem("options", JSON.stringify(options));
+  }, [options]);  // options'a bağlı olarak tetiklenir
+
+
+ const updateFeedback=(feedbackType)=> {
+  switch (feedbackType) {
+    case "good":     
+      setOptions({...options,good:options.good+1});      
+      break;
+    case "neutral":     
+      setOptions({...options,neutral:options.neutral+1});
+      break;
+    case "bad":      
+      setOptions({...options,bad:options.bad+1});
+      break;
+    case "reset":     
+      setOptions({good:0, neutral:0 , bad:0});
+      break;
+  }};
+ const totalFeedback = options.good + options.neutral + options.bad;
+ 
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+    <Description />
+    <Options  updateFeedback={updateFeedback} totalFeedback={totalFeedback} />
+    {totalFeedback>0 ?<FeedBack options={options} totalFeedback={totalFeedback} /> : <Notification />}
+    
     </>
   )
 }

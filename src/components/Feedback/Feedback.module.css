@@ -1,0 +1,9 @@
+/* Genel stil */
+.p {
+    font-family: 'Arial', sans-serif; 
+    font-size: 30px;                                   
+    margin: 8px 0;                    
+    line-height: 1.6;                 
+    text-align: center;    
+    color: #333;
+  }

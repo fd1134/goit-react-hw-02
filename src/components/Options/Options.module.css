@@ -1,0 +1,21 @@
+/* Genel buton stili */
+.button {
+  background-color: #4CAF50;  
+  color: white;              
+  border: none;
+  padding: 12px 24px;         
+  font-size: 16px;
+  cursor: pointer;
+  border-radius: 8px;        
+  margin: 10px 5px;           
+  transition: all 0.3s ease;  
+  }
+  
+  /* Hover effect */
+  .button:hover {
+    background-color: #45a049;  /* Hoverda biraz koyu yeşil */
+    transform: translateY(-2px); /* Yukarı hareket */
+  }
+  
+
+  
