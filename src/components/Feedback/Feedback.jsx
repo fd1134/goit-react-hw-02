@@ -1,4 +1,4 @@
-import css from "./FeedBack.module.css";
+import css from "./Feedback.module.css";
 const FeedBack = ({ options, totalFeedback }) => {
     const goodSate=options.good+options.neutral;
     const pozitive=Math.round((goodSate / totalFeedback) * 100)
